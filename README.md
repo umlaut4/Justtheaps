@@ -49,6 +49,16 @@ python app.py
 
 The dashboard will be available at `http://localhost:5000`
 
+**For development with debug mode:**
+```bash
+FLASK_DEBUG=true python app.py
+```
+
+**For testing with demo data:**
+```bash
+USE_DEMO_DATA=true python app.py
+```
+
 ### Using the Dashboard
 
 1. Open your browser to `http://localhost:5000`
