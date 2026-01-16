@@ -428,7 +428,8 @@
         loadOpportunities();
 
         // Auto-refresh every 5 minutes
-        setInterval(loadOpportunities, 5 * 60 * 1000);
+        const AUTO_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+        setInterval(loadOpportunities, AUTO_REFRESH_INTERVAL_MS);
     </script>
 </body>
 </html>

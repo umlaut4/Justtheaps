@@ -9,6 +9,10 @@ from typing import List, Dict, Optional
 class KalshiClient:
     """Client for interacting with Kalshi API"""
     
+    # Configuration constants
+    MAX_EVENTS = 20  # Maximum number of events to fetch
+    PRICE_DIVISOR = 100  # Kalshi prices are in cents, divide by 100 for dollars
+    
     def __init__(self):
         self.base_url = "https://api.elections.kalshi.com/trade-api/v2"
         
@@ -33,7 +37,7 @@ class KalshiClient:
             
             # Get markets for each event
             standardized_markets = []
-            for event in events[:20]:  # Limit to first 20 events to avoid too many API calls
+            for event in events[:self.MAX_EVENTS]:  # Limit events using constant
                 try:
                     event_ticker = event.get('event_ticker', '')
                     if not event_ticker:
@@ -90,8 +94,9 @@ class KalshiClient:
             no_ask = market.get('no_ask', 0)
             
             # Use mid prices (average of bid and ask)
-            yes_price = (yes_bid + yes_ask) / 2 / 100 if (yes_bid + yes_ask) > 0 else 0
-            no_price = (no_bid + no_ask) / 2 / 100 if (no_bid + no_ask) > 0 else 0
+            # Kalshi prices are in cents, divide by PRICE_DIVISOR to get dollar amounts
+            yes_price = (yes_bid + yes_ask) / 2 / self.PRICE_DIVISOR if (yes_bid + yes_ask) > 0 else 0
+            no_price = (no_bid + no_ask) / 2 / self.PRICE_DIVISOR if (no_bid + no_ask) > 0 else 0
             
             # Ensure prices sum to ~1 for arbitrage calculations
             if yes_price == 0 and no_price == 0:

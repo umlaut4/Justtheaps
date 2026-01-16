@@ -9,6 +9,9 @@ from typing import List, Dict, Optional
 class PolymarketClient:
     """Client for interacting with Polymarket API"""
     
+    # Configuration constants
+    MAX_MARKETS = 50  # Maximum number of markets to fetch
+    
     def __init__(self):
         self.base_url = "https://clob.polymarket.com"
         self.gamma_url = "https://gamma-api.polymarket.com"
@@ -32,7 +35,7 @@ class PolymarketClient:
             
             # Standardize the market data format
             standardized_markets = []
-            for market in markets[:50]:  # Limit to first 50 markets
+            for market in markets[:self.MAX_MARKETS]:  # Limit markets using constant
                 try:
                     standardized_market = self._standardize_market(market)
                     if standardized_market:
